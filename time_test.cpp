@@ -39,7 +39,7 @@ get_tsc(){
 
 int main(){
 
-    // uint64_t hex = 0x408fffffffffffff;
+    // uint64_t hex = 0xc08ff00000000001;
     // uint64_t qnan = 0x7ff8000000000001;
 
     // printf("%le\n", *((double *)&hex));
@@ -48,7 +48,7 @@ int main(){
 
     cpu_set_t cpuset;
     CPU_ZERO(&cpuset);
-    CPU_SET(36, &cpuset);
+    CPU_SET(24, &cpuset);
     sched_setaffinity(0, sizeof(cpu_set_t), &cpuset);
 
     size_t length;
@@ -57,8 +57,8 @@ int main(){
     double *x_data = new double[length];
     double *y_data = new double[length];
     for (size_t i = 0; i < length; ++i){
-        // x_data[i] = *((double *)&qnan);
-        x_data[i] = 200.0*rand()/RAND_MAX - 100;
+        // x_data[i] = *((double *)&hex);
+        x_data[i] = 200.0*rand()/RAND_MAX;
         y_data[i] = 200.0*rand()/RAND_MAX - 100;
     }
     // x_data[1] = 200;
@@ -68,25 +68,33 @@ int main(){
 
     // /* 测试 vec_log 的正确性，尤其注意诸如 NaN, inf 之类特殊值的处理 */
     // double *fast_ls = new double[length], *sim_ls = new double[length];
-    // SIMPLE_MATH::vec_log10(x_data, length, sim_ls);
-    // FAST_MATH::vec_log10(x_data, length, fast_ls);
+    // SIMPLE_MATH::vec_log2(x_data, length, sim_ls);
+    // FAST_MATH::vec_log2(x_data, length, fast_ls);
     // for (size_t i = 0; i < length; ++i){
-    //     printf("%e\t%e\n", sim_ls[i], fast_ls[i]);
+    //     if (abs(sim_ls[i] - fast_ls[i]) < 1e-11){
+    //         // printf("T\t");
+    //     }else{
+    //         printf("F\t");
+    //         printf("%lx\t%lx\t%lx\n", *(uint64_t *)(x_data+i), ((uint64_t *)sim_ls)[i], ((uint64_t *)fast_ls)[i]);
+    //     }
+    //     // printf("%lx\t%lx\t%lx\n", *(uint64_t *)(x_data+i), ((uint64_t *)sim_ls)[i], ((uint64_t *)fast_ls)[i]);
+    //     // printf("%lx\t%e\t%e\n", *(uint64_t *)(x_data+i), sim_ls[i], fast_ls[i]);
     // }
 
 
     // /* 测试 vec_exp 的正确性，尤其注意诸如 NaN, inf 之类特殊值的处理 */
     // double *fast_ls = new double[length], *sim_ls = new double[length];
-    // SIMPLE_MATH::vec_exp(x_data, length, sim_ls);
-    // FAST_MATH::vec_exp(x_data, length, fast_ls);
+    // SIMPLE_MATH::vec_2pow(x_data, length, sim_ls);
+    // FAST_MATH::vec_2pow(x_data, length, fast_ls);
     // for (size_t i = 0; i < length; ++i){
     //     if (abs(sim_ls[i]/fast_ls[i]-1) < 1e-13){
-    //         // printf("T\t");
+    //         printf("T\t");
     //     }else{
     //         printf("F\t");
-    //         printf("%lx\t%e\t%e\n", *(uint64_t *)(x_data+i), sim_ls[i], fast_ls[i]);
+    //         // printf("%lx\t%lx\t%lx\n", *(uint64_t *)(x_data+i), ((uint64_t *)sim_ls)[i], ((uint64_t *)fast_ls)[i]);
     //     }
-    //     // printf("%lx\t%e\t%e\n", *(uint64_t *)(x_data+i), sim_ls[i], fast_ls[i]);
+    //     // printf("%lx\t%lx\t%lx\n", *(uint64_t *)(x_data+i), ((uint64_t *)sim_ls)[i], ((uint64_t *)fast_ls)[i]);
+    //     printf("%lx\t%e\t%e\n", *(uint64_t *)(x_data+i), sim_ls[i], fast_ls[i]);
     // }
 
 
@@ -154,7 +162,7 @@ int main(){
 
 
 
-        std::cout << std::endl << split << std::endl;
+    std::cout << std::endl << split << std::endl;
     PRINT_TSC_SPENT
     (
         "SIMPLE_MATH::max", 

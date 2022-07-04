@@ -17,12 +17,12 @@ _ZNKSt5ctypeIcE8do_widenEc:
 	.p2align 4
 	.type	_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E.isra.0, @function
 _ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E.isra.0:
-.LFB8717:
+.LFB8718:
 	.cfi_startproc
 	movq	-24(%rsi), %rdx
 	jmp	_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
 	.cfi_endproc
-.LFE8717:
+.LFE8718:
 	.size	_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E.isra.0, .-_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E.isra.0
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC9:
@@ -101,10 +101,10 @@ _ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E.isra
 	.globl	main
 	.type	main, @function
 main:
-.LFB8104:
+.LFB8105:
 	.cfi_startproc
 	.cfi_personality 0x3,__gxx_personality_v0
-	.cfi_lsda 0x3,.LLSDA8104
+	.cfi_lsda 0x3,.LLSDA8105
 	leaq	8(%rsp), %r10
 	.cfi_def_cfa 10, 0
 	andq	$-64, %rsp
@@ -131,7 +131,6 @@ main:
 	call	srand
 	vpxor	%xmm0, %xmm0, %xmm0
 	xorl	%edi, %edi
-	movabsq	$68719476736, %rax
 	leaq	-176(%rbp), %rdx
 	movl	$128, %esi
 	vmovdqu	%xmm0, -168(%rbp)
@@ -142,7 +141,7 @@ main:
 	vmovdqu	%xmm0, -88(%rbp)
 	vmovdqu	%xmm0, -72(%rbp)
 	movq	$0, -56(%rbp)
-	movq	%rax, -176(%rbp)
+	movq	$16777216, -176(%rbp)
 	call	sched_setaffinity
 	leaq	-288(%rbp), %rsi
 	movl	$_ZSt3cin, %edi
@@ -169,7 +168,6 @@ main:
 	vcvtsi2sdl	%eax, %xmm7, %xmm0
 	vmulsd	.LC6(%rip), %xmm0, %xmm0
 	vdivsd	.LC7(%rip), %xmm0, %xmm0
-	vsubsd	.LC8(%rip), %xmm0, %xmm0
 	vmovsd	%xmm0, (%rbx,%r12,8)
 	call	rand
 	vxorpd	%xmm7, %xmm7, %xmm7
@@ -2157,11 +2155,11 @@ main:
 	jne	.L193
 	testq	%r15, %r15
 	je	.L880
-	vxorpd	%xmm2, %xmm2, %xmm2
+	vxorpd	%xmm5, %xmm5, %xmm5
 	movq	-304(%rbp), %rcx
 	movq	%r15, %rdx
-	vmovsd	%xmm2, %xmm2, %xmm5
-	vmovsd	%xmm2, %xmm2, %xmm0
+	vmovsd	%xmm5, %xmm5, %xmm2
+	vmovsd	%xmm5, %xmm5, %xmm0
 .L194:
 	vmovsd	(%rbx,%rax,8), %xmm4
 	vmovsd	(%rcx,%rax,8), %xmm3
@@ -2169,8 +2167,8 @@ main:
 	vucomisd	%xmm1, %xmm1
 	jp	.L881
 	vaddsd	%xmm1, %xmm0, %xmm0
-	vaddsd	%xmm4, %xmm5, %xmm5
-	vaddsd	%xmm3, %xmm2, %xmm2
+	vaddsd	%xmm4, %xmm2, %xmm2
+	vaddsd	%xmm3, %xmm5, %xmm5
 .L199:
 	incq	%rax
 	cmpq	%rax, %r15
@@ -2341,21 +2339,21 @@ main:
 	call	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
 	movl	$_ZSt4cout, %edi
 	call	_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
-	movq	-288(%rbp), %rsi
-	movq	%rsi, %rax
-	andq	$-8, %rax
+	movq	-288(%rbp), %rcx
+	movq	%rcx, %rax
+	andq	$-512, %rax
 	jne	.L211
-	testq	%rsi, %rsi
+	testq	%rcx, %rcx
 	je	.L886
 	vxorpd	%xmm6, %xmm6, %xmm6
-	movq	-304(%rbp), %rcx
-	movq	%rsi, %rdx
+	movq	-304(%rbp), %rsi
+	movq	%rcx, %rdx
 	vmovsd	%xmm6, %xmm6, %xmm2
 	vmovsd	%xmm6, %xmm6, %xmm3
 	vmovsd	%xmm6, %xmm6, %xmm4
 .L212:
 	vmovsd	(%rbx,%rax,8), %xmm1
-	vmovsd	(%rcx,%rax,8), %xmm0
+	vmovsd	(%rsi,%rax,8), %xmm0
 	vmulsd	%xmm0, %xmm1, %xmm5
 	vucomisd	%xmm5, %xmm5
 	jp	.L887
@@ -2365,7 +2363,7 @@ main:
 	vaddsd	%xmm0, %xmm3, %xmm3
 .L217:
 	incq	%rax
-	cmpq	%rax, %rsi
+	cmpq	%rax, %rcx
 	jne	.L212
 .L213:
 	vmulsd	%xmm4, %xmm4, %xmm4
@@ -2384,23 +2382,23 @@ main:
 	or %rdx, %rax
 # 0 "" 2
 #NO_APP
-	movq	-288(%rbp), %rsi
+	movq	-288(%rbp), %rcx
 	movq	%rax, %r15
-	movq	%rsi, %rax
-	andq	$-8, %rax
+	movq	%rcx, %rax
+	andq	$-512, %rax
 	jne	.L218
-	testq	%rsi, %rsi
+	testq	%rcx, %rcx
 	je	.L888
 	vxorpd	%xmm7, %xmm7, %xmm7
-	movq	-304(%rbp), %rcx
-	movq	%rsi, %rdx
+	movq	-304(%rbp), %rsi
+	movq	%rcx, %rdx
 	vmovsd	%xmm7, %xmm7, %xmm3
 	vmovsd	%xmm7, %xmm7, %xmm4
 	vmovsd	%xmm7, %xmm7, %xmm5
 	vmovsd	%xmm7, %xmm7, %xmm6
 .L219:
 	vmovsd	(%rbx,%rax,8), %xmm1
-	vmovsd	(%rcx,%rax,8), %xmm0
+	vmovsd	(%rsi,%rax,8), %xmm0
 	vmulsd	%xmm0, %xmm1, %xmm2
 	vucomisd	%xmm2, %xmm2
 	jp	.L889
@@ -2411,7 +2409,7 @@ main:
 	vaddsd	%xmm0, %xmm4, %xmm4
 .L224:
 	incq	%rax
-	cmpq	%rax, %rsi
+	cmpq	%rax, %rcx
 	jne	.L219
 .L220:
 	vmulsd	%xmm5, %xmm4, %xmm1
@@ -2936,10 +2934,10 @@ main:
 	jne	.L289
 .L410:
 	vmulsd	%xmm1, %xmm1, %xmm1
-	vmulsd	%xmm4, %xmm2, %xmm2
 	vfnmadd132sd	%xmm4, %xmm3, %xmm1
+	vmulsd	%xmm2, %xmm4, %xmm4
 	vmulsd	%xmm1, %xmm1, %xmm0
-	vdivsd	%xmm0, %xmm2, %xmm7
+	vdivsd	%xmm0, %xmm4, %xmm7
 	vmovq	%xmm7, %r13
 #APP
 # 14 "time_test.cpp" 1
@@ -3269,25 +3267,25 @@ main:
 	xorl	%r13d, %r13d
 	jmp	.L321
 .L333:
-	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm4
+	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm3
 	vmovdqa64	_ZN9FAST_MATHL7exp_subE(%rip), %zmm2
-	vpandq	%zmm0, %zmm4, %zmm1
-	vpcmpeqq	%zmm4, %zmm1, %k3
+	vpandq	%zmm0, %zmm3, %zmm1
+	vpcmpeqq	%zmm3, %zmm1, %k3
 	vpsrlq	$52, %zmm1, %zmm1
 	vpcmpq	$5, %zmm2, %zmm1, %k1
 	vpmovq2m	%zmm0, %k2
 	movabsq	$9218868437227405312, %rax
-	vpsubq	%zmm2, %zmm1, %zmm5{%k1}{z}
+	vpsubq	%zmm2, %zmm1, %zmm4{%k1}{z}
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm2
-	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm5, %k4
-	vporq	%zmm2, %zmm4, %zmm1
+	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm4, %k4
+	vporq	%zmm2, %zmm3, %zmm1
 	vandpd	%zmm1, %zmm0, %zmm1
 	vandpd	%zmm2, %zmm1, %zmm1{%k1}
-	vpsllvq	%zmm5, %zmm1, %zmm0
+	vpsllvq	%zmm4, %zmm1, %zmm0
 	vptestmq	%zmm2, %zmm1, %k3{%k3}
+	vpandq	%zmm3, %zmm0, %zmm5{%k1}{z}
 	vmovapd	%zmm0, %zmm3
 	vandpd	%zmm2, %zmm0, %zmm3{%k1}
-	vpandq	%zmm4, %zmm0, %zmm6{%k1}{z}
 	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm0
 	vmovapd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+64(%rip), %zmm2
 	vorpd	%zmm0, %zmm3, %zmm3{%k1}
@@ -3304,21 +3302,21 @@ main:
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+192(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+256(%rip), %zmm0, %zmm2
-	vmulpd	%zmm0, %zmm3, %zmm0
+	vmulpd	%zmm3, %zmm0, %zmm0
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+320(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vmovdqa64	_ZN9FAST_MATHL7exp_oneE(%rip), %zmm3
-	vpsllvq	%zmm5, %zmm3, %zmm5
+	vpsllvq	%zmm4, %zmm3, %zmm4
 	vfmadd132pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+384(%rip), %zmm2, %zmm0
 	vaddpd	%zmm1, %zmm0, %zmm2
 	vsubpd	%zmm1, %zmm0, %zmm0
-	vpaddq	%zmm5, %zmm6, %zmm1
+	vpaddq	%zmm4, %zmm5, %zmm1
 	vdivpd	%zmm0, %zmm2, %zmm2
 	vmovdqa64	%zmm2, %zmm0
 	vpaddq	%zmm2, %zmm1, %zmm0{%k5}
 	kandb	%k1, %k2, %k5
 	vpsubq	%zmm1, %zmm0, %zmm0{%k5}
-	vptestnmq	%zmm4, %zmm0, %k1{%k1}
+	vptestnmq	_ZN9FAST_MATHL10exp_mask10E(%rip), %zmm0, %k1{%k1}
 	vpsubq	%zmm3, %zmm0, %zmm0{%k2}
 	vpbroadcastq	%rax, %zmm0{%k4}
 	xorl	%eax, %eax
@@ -3386,25 +3384,25 @@ main:
 	xorl	%r13d, %r13d
 	jmp	.L319
 .L324:
-	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm4
+	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm3
 	vmovdqa64	_ZN9FAST_MATHL7exp_subE(%rip), %zmm2
-	vpandq	%zmm0, %zmm4, %zmm1
-	vpcmpeqq	%zmm4, %zmm1, %k3
+	vpandq	%zmm0, %zmm3, %zmm1
+	vpcmpeqq	%zmm3, %zmm1, %k3
 	vpsrlq	$52, %zmm1, %zmm1
 	vpcmpq	$5, %zmm2, %zmm1, %k1
 	vpmovq2m	%zmm0, %k2
 	movabsq	$9218868437227405312, %rax
-	vpsubq	%zmm2, %zmm1, %zmm5{%k1}{z}
+	vpsubq	%zmm2, %zmm1, %zmm4{%k1}{z}
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm2
-	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm5, %k4
-	vporq	%zmm2, %zmm4, %zmm1
+	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm4, %k4
+	vporq	%zmm2, %zmm3, %zmm1
 	vandpd	%zmm1, %zmm0, %zmm1
 	vandpd	%zmm2, %zmm1, %zmm1{%k1}
-	vpsllvq	%zmm5, %zmm1, %zmm0
+	vpsllvq	%zmm4, %zmm1, %zmm0
 	vptestmq	%zmm2, %zmm1, %k3{%k3}
+	vpandq	%zmm3, %zmm0, %zmm5{%k1}{z}
 	vmovapd	%zmm0, %zmm3
 	vandpd	%zmm2, %zmm0, %zmm3{%k1}
-	vpandq	%zmm4, %zmm0, %zmm6{%k1}{z}
 	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm0
 	vmovapd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+64(%rip), %zmm2
 	vorpd	%zmm0, %zmm3, %zmm3{%k1}
@@ -3425,17 +3423,17 @@ main:
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+320(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vmovdqa64	_ZN9FAST_MATHL7exp_oneE(%rip), %zmm3
-	vpsllvq	%zmm5, %zmm3, %zmm5
+	vpsllvq	%zmm4, %zmm3, %zmm4
 	vfmadd132pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+384(%rip), %zmm2, %zmm0
 	vaddpd	%zmm1, %zmm0, %zmm2
 	vsubpd	%zmm1, %zmm0, %zmm0
-	vpaddq	%zmm5, %zmm6, %zmm1
+	vpaddq	%zmm4, %zmm5, %zmm1
 	vdivpd	%zmm0, %zmm2, %zmm2
 	vmovdqa64	%zmm2, %zmm0
 	vpaddq	%zmm2, %zmm1, %zmm0{%k5}
 	kandb	%k1, %k2, %k5
 	vpsubq	%zmm1, %zmm0, %zmm0{%k5}
-	vptestnmq	%zmm4, %zmm0, %k1{%k1}
+	vptestnmq	_ZN9FAST_MATHL10exp_mask10E(%rip), %zmm0, %k1{%k1}
 	vpsubq	%zmm3, %zmm0, %zmm0{%k2}
 	vpbroadcastq	%rax, %zmm0{%k4}
 	xorl	%eax, %eax
@@ -3492,30 +3490,30 @@ main:
 	testb	%al, %al
 	je	.L898
 .L327:
-	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm4
+	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm3
 	vmovapd	-368(%rbp), %zmm7
 	vmovdqa64	_ZN9FAST_MATHL7exp_subE(%rip), %zmm1
-	vpandq	%zmm7, %zmm4, %zmm0
-	vpcmpeqq	%zmm4, %zmm0, %k3
+	vpandq	%zmm7, %zmm3, %zmm0
+	vpcmpeqq	%zmm3, %zmm0, %k3
 	vpsrlq	$52, %zmm0, %zmm0
 	vpcmpq	$5, %zmm1, %zmm0, %k1
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm2
 	vpmovq2m	%zmm7, %k2
-	vpsubq	%zmm1, %zmm0, %zmm5{%k1}{z}
-	vporq	%zmm2, %zmm4, %zmm0
+	vpsubq	%zmm1, %zmm0, %zmm4{%k1}{z}
+	vporq	%zmm2, %zmm3, %zmm0
 	vandpd	%zmm7, %zmm0, %zmm1
 	vandpd	%zmm2, %zmm1, %zmm1{%k1}
-	vpsllvq	%zmm5, %zmm1, %zmm0
+	vpsllvq	%zmm4, %zmm1, %zmm0
 	vptestmq	%zmm2, %zmm1, %k3{%k3}
+	vpandq	%zmm3, %zmm0, %zmm5{%k1}{z}
 	vmovapd	%zmm0, %zmm3
 	vandpd	%zmm2, %zmm0, %zmm3{%k1}
-	vpandq	%zmm4, %zmm0, %zmm6{%k1}{z}
 	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm0
 	vmovapd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+64(%rip), %zmm2
 	vorpd	%zmm0, %zmm3, %zmm3{%k1}
 	vmovapd	%zmm3, %zmm1
 	vsubpd	%zmm0, %zmm3, %zmm1{%k1}
-	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm5, %k4
+	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm4, %k4
 	kandnb	%k1, %k2, %k5
 	vsubpd	%zmm1, %zmm0, %zmm1{%k2}
 	movl	$2047, %eax
@@ -3534,17 +3532,17 @@ main:
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+320(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vmovdqa64	_ZN9FAST_MATHL7exp_oneE(%rip), %zmm3
-	vpsllvq	%zmm5, %zmm3, %zmm5
+	vpsllvq	%zmm4, %zmm3, %zmm4
 	vfmadd132pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+384(%rip), %zmm2, %zmm0
 	vaddpd	%zmm1, %zmm0, %zmm2
 	vsubpd	%zmm1, %zmm0, %zmm0
-	vpaddq	%zmm5, %zmm6, %zmm1
+	vpaddq	%zmm4, %zmm5, %zmm1
 	vdivpd	%zmm0, %zmm2, %zmm2
 	vmovdqa64	%zmm2, %zmm0
 	vpaddq	%zmm2, %zmm1, %zmm0{%k5}
 	kandb	%k1, %k2, %k5
 	vpsubq	%zmm1, %zmm0, %zmm0{%k5}
-	vptestnmq	%zmm4, %zmm0, %k1{%k1}
+	vptestnmq	_ZN9FAST_MATHL10exp_mask10E(%rip), %zmm0, %k1{%k1}
 	vpsubq	%zmm3, %zmm0, %zmm0{%k2}
 	vpbroadcastq	%rax, %zmm0{%k4}
 	xorl	%eax, %eax
@@ -4578,37 +4576,37 @@ main:
 	xorl	%r14d, %r14d
 	jmp	.L344
 .L349:
-	vpsrlq	$52, %zmm0, %zmm2
-	vpsubq	_ZN9FAST_MATHL7exp_subE(%rip), %zmm2, %zmm2
+	vpsrlq	$52, %zmm0, %zmm3
+	vpsubq	_ZN9FAST_MATHL7exp_subE(%rip), %zmm3, %zmm3
 	vmovdqa64	_ZN9FAST_MATHL8exp_zeroE(%rip), %zmm1
-	vpcmpeqq	_ZN9FAST_MATHL7exp_infE(%rip), %zmm2, %k2
+	vpcmpeqq	_ZN9FAST_MATHL7exp_infE(%rip), %zmm3, %k2
 	vptestnmq	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm0, %k4
 	vpmovq2m	%zmm0, %k1
 	vptestnmq	%zmm1, %zmm0, %k3{%k2}
 	vandpd	%zmm1, %zmm0, %zmm0
-	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm3
+	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm2
 	vorpd	_ZN9FAST_MATHL7exp_setE(%rip), %zmm0, %zmm0
-	vcvtqq2pd	%zmm2, %zmm2
-	vsubpd	%zmm3, %zmm0, %zmm1
-	vaddpd	%zmm3, %zmm0, %zmm0
+	vcvtqq2pd	%zmm3, %zmm3
+	vsubpd	%zmm2, %zmm0, %zmm1
+	vaddpd	%zmm2, %zmm0, %zmm0
 	movabsq	$-4503599627370496, %rax
 	korb	%k2, %k1, %k1
 	vdivpd	%zmm0, %zmm1, %zmm1
-	vmulpd	%zmm1, %zmm1, %zmm3
-	vmulpd	%zmm3, %zmm1, %zmm0
+	vmulpd	%zmm1, %zmm1, %zmm0
+	vmulpd	%zmm0, %zmm1, %zmm2
 	vmulpd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params(%rip), %zmm1, %zmm1
-	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+64(%rip), %zmm0, %zmm1
-	vmulpd	%zmm0, %zmm3, %zmm0
-	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+128(%rip), %zmm0, %zmm1
-	vmulpd	%zmm3, %zmm0, %zmm0
-	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+192(%rip), %zmm0, %zmm1
-	vmulpd	%zmm0, %zmm3, %zmm0
-	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+256(%rip), %zmm0, %zmm1
-	vmulpd	%zmm0, %zmm3, %zmm0
-	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+320(%rip), %zmm0, %zmm1
-	vmulpd	%zmm3, %zmm0, %zmm0
+	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+64(%rip), %zmm2, %zmm1
+	vmulpd	%zmm0, %zmm2, %zmm2
+	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+128(%rip), %zmm2, %zmm1
+	vmulpd	%zmm0, %zmm2, %zmm2
+	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+192(%rip), %zmm2, %zmm1
+	vmulpd	%zmm2, %zmm0, %zmm2
+	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+256(%rip), %zmm2, %zmm1
+	vmulpd	%zmm0, %zmm2, %zmm2
+	vfmadd231pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+320(%rip), %zmm2, %zmm1
+	vmulpd	%zmm2, %zmm0, %zmm0
 	vfmadd132pd	_ZZN9FAST_MATH8avx_log2EDv8_dE16log2_poly_params+384(%rip), %zmm1, %zmm0
-	vaddpd	%zmm2, %zmm0, %zmm0
+	vaddpd	%zmm3, %zmm0, %zmm0
 	vpbroadcastq	%rax, %zmm0{%k4}
 	movabsq	$9221120237041090561, %rax
 	vpbroadcastq	%rax, %zmm0{%k1}
@@ -4663,30 +4661,30 @@ main:
 	testb	%al, %al
 	je	.L909
 .L336:
-	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm4
+	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm3
 	vmovapd	-368(%rbp), %zmm7
 	vmovdqa64	_ZN9FAST_MATHL7exp_subE(%rip), %zmm1
-	vpandq	%zmm7, %zmm4, %zmm0
-	vpcmpeqq	%zmm4, %zmm0, %k3
+	vpandq	%zmm7, %zmm3, %zmm0
+	vpcmpeqq	%zmm3, %zmm0, %k3
 	vpsrlq	$52, %zmm0, %zmm0
 	vpcmpq	$5, %zmm1, %zmm0, %k1
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm2
 	vpmovq2m	%zmm7, %k2
-	vpsubq	%zmm1, %zmm0, %zmm5{%k1}{z}
-	vporq	%zmm2, %zmm4, %zmm0
+	vpsubq	%zmm1, %zmm0, %zmm4{%k1}{z}
+	vporq	%zmm2, %zmm3, %zmm0
 	vandpd	%zmm7, %zmm0, %zmm1
 	vandpd	%zmm2, %zmm1, %zmm1{%k1}
-	vpsllvq	%zmm5, %zmm1, %zmm0
+	vpsllvq	%zmm4, %zmm1, %zmm0
 	vptestmq	%zmm2, %zmm1, %k3{%k3}
+	vpandq	%zmm3, %zmm0, %zmm5{%k1}{z}
 	vmovapd	%zmm0, %zmm3
-	vpandq	%zmm4, %zmm0, %zmm6{%k1}{z}
 	vandpd	%zmm2, %zmm0, %zmm3{%k1}
 	vmovapd	_ZN9FAST_MATHL7avx_oneE(%rip), %zmm0
 	vmovapd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+64(%rip), %zmm2
 	vorpd	%zmm0, %zmm3, %zmm3{%k1}
 	vmovapd	%zmm3, %zmm1
 	vsubpd	%zmm0, %zmm3, %zmm1{%k1}
-	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm5, %k4
+	vpcmpq	$5, _ZN9FAST_MATHL8exp_flowE(%rip), %zmm4, %k4
 	kandnb	%k1, %k2, %k5
 	vsubpd	%zmm1, %zmm0, %zmm1{%k2}
 	movl	$2047, %eax
@@ -4701,21 +4699,21 @@ main:
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+192(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+256(%rip), %zmm0, %zmm2
-	vmulpd	%zmm3, %zmm0, %zmm0
+	vmulpd	%zmm0, %zmm3, %zmm0
 	vfmadd231pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+320(%rip), %zmm0, %zmm2
 	vmulpd	%zmm3, %zmm0, %zmm0
 	vmovdqa64	_ZN9FAST_MATHL7exp_oneE(%rip), %zmm3
-	vpsllvq	%zmm5, %zmm3, %zmm5
+	vpsllvq	%zmm4, %zmm3, %zmm4
 	vfmadd132pd	_ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params+384(%rip), %zmm2, %zmm0
 	vaddpd	%zmm1, %zmm0, %zmm2
 	vsubpd	%zmm1, %zmm0, %zmm0
-	vpaddq	%zmm5, %zmm6, %zmm1
+	vpaddq	%zmm4, %zmm5, %zmm1
 	vdivpd	%zmm0, %zmm2, %zmm2
 	vmovdqa64	%zmm2, %zmm0
 	vpaddq	%zmm2, %zmm1, %zmm0{%k5}
 	kandb	%k1, %k2, %k5
 	vpsubq	%zmm1, %zmm0, %zmm0{%k5}
-	vptestnmq	%zmm4, %zmm0, %k1{%k1}
+	vptestnmq	_ZN9FAST_MATHL10exp_mask10E(%rip), %zmm0, %k1{%k1}
 	vpsubq	%zmm3, %zmm0, %zmm0{%k2}
 	vpbroadcastq	%rax, %zmm0{%k4}
 	xorl	%eax, %eax
@@ -4783,48 +4781,50 @@ main:
 .L218:
 	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm0
 	vxorpd	%xmm5, %xmm5, %xmm5
+	movq	%rcx, %rdi
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm1
 	movq	-304(%rbp), %r8
+	andq	$-8, %rdi
 	vmovapd	%zmm0, %zmm13
-	movq	%rsi, %rdi
+	movq	%rcx, %rsi
 	vmovapd	%zmm5, %zmm6
 	vmovapd	%zmm5, %zmm7
 	vmovapd	%zmm5, %zmm8
 	vmovapd	%zmm5, %zmm9
-	xorl	%edx, %edx
+	xorl	%eax, %eax
 .L221:
-	vmovupd	(%rbx,%rdx,8), %zmm3
-	vmovupd	(%r8,%rdx,8), %zmm2
+	vmovupd	(%rbx,%rax,8), %zmm3
+	vmovupd	(%r8,%rax,8), %zmm2
 	vmulpd	%zmm3, %zmm3, %zmm11
 	vmulpd	%zmm2, %zmm3, %zmm4
 	vmulpd	%zmm2, %zmm2, %zmm10
-	addq	$8, %rdx
+	addq	$8, %rax
 	vandpd	%zmm13, %zmm4, %zmm12
 	vpcmpeqq	%zmm0, %zmm12, %k1
 	vptestmq	%zmm1, %zmm4, %k1{%k1}
-	kmovb	%k1, %ecx
+	kmovb	%k1, %edx
 	knotb	%k1, %k1
-	popcntl	%ecx, %ecx
+	popcntl	%edx, %edx
 	vaddpd	%zmm3, %zmm9, %zmm9{%k1}
 	vaddpd	%zmm2, %zmm8, %zmm8{%k1}
 	vaddpd	%zmm11, %zmm7, %zmm7{%k1}
 	vaddpd	%zmm10, %zmm6, %zmm6{%k1}
 	vaddpd	%zmm4, %zmm5, %zmm5{%k1}
-	subq	%rcx, %rdi
-	cmpq	%rdx, %rax
+	subq	%rdx, %rsi
+	cmpq	%rax, %rdi
 	jne	.L221
-	andl	$7, %esi
-	movl	$1, %edx
-	shlx	%esi, %edx, %edx
-	leal	-1(%rdx), %esi
-	kmovb	%esi, %k2
-	movq	-304(%rbp), %rsi
-	salq	$3, %rax
-	vmovupd	(%rbx,%rax), %zmm4{%k2}{z}
-	vmovupd	(%rsi,%rax), %zmm3{%k2}{z}
-	vmulpd	%zmm4, %zmm4, %zmm12
-	vmulpd	%zmm3, %zmm4, %zmm10
+	andl	$7, %ecx
+	movl	$1, %eax
+	shlx	%ecx, %eax, %eax
+	decl	%eax
+	kmovb	%eax, %k2
+	movq	-304(%rbp), %rax
+	salq	$3, %rdi
+	vmovupd	(%rax,%rdi), %zmm3{%k2}{z}
+	vmovupd	(%rbx,%rdi), %zmm4{%k2}{z}
 	vmulpd	%zmm3, %zmm3, %zmm11
+	vmulpd	%zmm3, %zmm4, %zmm10
+	vmulpd	%zmm4, %zmm4, %zmm12
 	vandpd	%zmm0, %zmm10, %zmm2
 	vpcmpeqq	%zmm0, %zmm2, %k1
 	vmovapd	%zmm9, %zmm2
@@ -4851,9 +4851,9 @@ main:
 	vaddpd	%xmm3, %xmm0, %xmm0
 	vhaddpd	%xmm1, %xmm1, %xmm1
 	popcntl	%eax, %eax
-	subq	%rax, %rdi
+	subq	%rax, %rsi
 	vmulsd	%xmm1, %xmm2, %xmm4
-	vcvtusi2sdq	%rdi, %xmm5, %xmm3
+	vcvtusi2sdq	%rsi, %xmm5, %xmm3
 	vaddpd	%zmm12, %zmm7, %zmm7{%k1}
 	vhaddpd	%xmm0, %xmm0, %xmm0
 	vmulsd	%xmm2, %xmm2, %xmm2
@@ -4885,46 +4885,48 @@ main:
 .L211:
 	vmovdqa64	_ZN9FAST_MATHL8exp_maskE(%rip), %zmm0
 	vxorpd	%xmm4, %xmm4, %xmm4
+	movq	%rcx, %rdi
 	vmovdqa64	_ZN9FAST_MATHL9frac_maskE(%rip), %zmm1
 	movq	-304(%rbp), %r8
+	andq	$-8, %rdi
 	vmovapd	%zmm0, %zmm12
-	movq	%rsi, %rdi
+	movq	%rcx, %rsi
 	vmovapd	%zmm4, %zmm5
 	vmovapd	%zmm4, %zmm6
 	vmovapd	%zmm4, %zmm7
-	xorl	%edx, %edx
+	xorl	%eax, %eax
 .L214:
-	vmovupd	(%rbx,%rdx,8), %zmm3
-	vmovupd	(%r8,%rdx,8), %zmm2
+	vmovupd	(%rbx,%rax,8), %zmm3
+	vmovupd	(%r8,%rax,8), %zmm2
 	vmulpd	%zmm3, %zmm3, %zmm10
 	vmulpd	%zmm2, %zmm3, %zmm8
 	vmulpd	%zmm2, %zmm2, %zmm9
-	addq	$8, %rdx
+	addq	$8, %rax
 	vandpd	%zmm12, %zmm8, %zmm11
 	vpcmpeqq	%zmm0, %zmm11, %k1
 	vptestmq	%zmm1, %zmm8, %k1{%k1}
-	kmovb	%k1, %ecx
+	kmovb	%k1, %edx
 	knotb	%k1, %k1
-	popcntl	%ecx, %ecx
+	popcntl	%edx, %edx
 	vaddpd	%zmm3, %zmm7, %zmm7{%k1}
 	vaddpd	%zmm2, %zmm6, %zmm6{%k1}
 	vaddpd	%zmm10, %zmm5, %zmm5{%k1}
 	vaddpd	%zmm9, %zmm4, %zmm4{%k1}
-	subq	%rcx, %rdi
-	cmpq	%rdx, %rax
+	subq	%rdx, %rsi
+	cmpq	%rax, %rdi
 	jne	.L214
-	andl	$7, %esi
-	movl	$1, %edx
-	shlx	%esi, %edx, %edx
-	leal	-1(%rdx), %esi
-	kmovb	%esi, %k2
-	movq	-304(%rbp), %rsi
-	salq	$3, %rax
-	vmovupd	(%rbx,%rax), %zmm3{%k2}{z}
-	vmovupd	(%rsi,%rax), %zmm2{%k2}{z}
-	vmulpd	%zmm3, %zmm3, %zmm10
-	vmulpd	%zmm2, %zmm3, %zmm8
+	andl	$7, %ecx
+	movl	$1, %eax
+	shlx	%ecx, %eax, %eax
+	decl	%eax
+	kmovb	%eax, %k2
+	movq	-304(%rbp), %rax
+	salq	$3, %rdi
+	vmovupd	(%rax,%rdi), %zmm2{%k2}{z}
+	vmovupd	(%rbx,%rdi), %zmm3{%k2}{z}
 	vmulpd	%zmm2, %zmm2, %zmm9
+	vmulpd	%zmm2, %zmm3, %zmm8
+	vmulpd	%zmm3, %zmm3, %zmm10
 	xorl	%edx, %edx
 	vandpd	%zmm0, %zmm8, %zmm11
 	vpcmpeqq	%zmm0, %zmm11, %k1
@@ -4952,7 +4954,7 @@ main:
 	vextractf64x2	$0x1, %ymm4, %xmm0
 	popcntl	%eax, %edx
 	vaddpd	%xmm4, %xmm0, %xmm0
-	movq	%rdi, %rax
+	movq	%rsi, %rax
 	vmulsd	%xmm2, %xmm2, %xmm2
 	subq	%rdx, %rax
 	vxorpd	%xmm7, %xmm7, %xmm7
@@ -5084,27 +5086,27 @@ main:
 	jne	.L48
 	jmp	.L45
 .L297:
-	leaq	(%rbx,%r15,8), %rax
-	cmpq	%rax, %rbx
+	leaq	(%rbx,%r15,8), %rdx
+	cmpq	%rdx, %rbx
 	je	.L302
-	movq	%rbx, %rdx
+	movq	%rbx, %rax
 	vxorpd	%xmm5, %xmm5, %xmm5
 .L305:
-	vmovsd	(%rdx), %xmm0
+	vmovsd	(%rax), %xmm0
 	vucomisd	%xmm0, %xmm0
 	jp	.L911
 	vaddsd	%xmm0, %xmm5, %xmm5
 .L304:
-	addq	$8, %rdx
-	cmpq	%rdx, %rax
+	addq	$8, %rax
+	cmpq	%rax, %rdx
 	jne	.L305
 	vxorpd	%xmm7, %xmm7, %xmm7
 	vcvtusi2sdq	%rcx, %xmm7, %xmm7
-	movq	%rbx, %rdx
+	movq	%rbx, %rax
 	vxorpd	%xmm4, %xmm4, %xmm4
 	vdivsd	%xmm7, %xmm5, %xmm5
 .L310:
-	vmovsd	(%rdx), %xmm0
+	vmovsd	(%rax), %xmm0
 	vsubsd	%xmm5, %xmm0, %xmm0
 	vmulsd	%xmm0, %xmm0, %xmm0
 	vmulsd	%xmm0, %xmm0, %xmm0
@@ -5112,20 +5114,20 @@ main:
 	jp	.L309
 	vaddsd	%xmm0, %xmm4, %xmm4
 .L309:
-	addq	$8, %rdx
-	cmpq	%rdx, %rax
+	addq	$8, %rax
+	cmpq	%rax, %rdx
 	jne	.L310
-	movq	%rbx, %rdx
+	movq	%rbx, %rax
 	vxorpd	%xmm1, %xmm1, %xmm1
 .L311:
-	vmovsd	(%rdx), %xmm0
+	vmovsd	(%rax), %xmm0
 	vmulsd	%xmm0, %xmm0, %xmm0
 	vucomisd	%xmm0, %xmm0
 	jp	.L313
 	vaddsd	%xmm0, %xmm1, %xmm1
 .L313:
-	addq	$8, %rdx
-	cmpq	%rdx, %rax
+	addq	$8, %rax
+	cmpq	%rax, %rdx
 	jne	.L311
 	jmp	.L312
 .L261:
@@ -5246,7 +5248,7 @@ main:
 	cmpq	%rcx, %r15
 	jne	.L403
 .L404:
-	vmulsd	%xmm5, %xmm2, %xmm5
+	vmulsd	%xmm2, %xmm5, %xmm5
 	vxorpd	%xmm7, %xmm7, %xmm7
 	vmulsd	%xmm2, %xmm2, %xmm2
 	vcvtusi2sdq	%rax, %xmm7, %xmm1
@@ -5531,10 +5533,10 @@ main:
 	vmovsd	%xmm0, %xmm0, %xmm6
 	jmp	.L204
 .L880:
-	vxorpd	%xmm2, %xmm2, %xmm2
+	vxorpd	%xmm5, %xmm5, %xmm5
 	xorl	%edx, %edx
-	vmovsd	%xmm2, %xmm2, %xmm5
-	vmovsd	%xmm2, %xmm2, %xmm0
+	vmovsd	%xmm5, %xmm5, %xmm2
+	vmovsd	%xmm5, %xmm5, %xmm0
 	jmp	.L195
 .L452:
 	vxorpd	%xmm3, %xmm3, %xmm3
@@ -5767,30 +5769,30 @@ main:
 	jmp	.L409
 	.globl	__gxx_personality_v0
 	.section	.gcc_except_table,"a",@progbits
-.LLSDA8104:
+.LLSDA8105:
 	.byte	0xff
 	.byte	0xff
 	.byte	0x1
-	.uleb128 .LLSDACSE8104-.LLSDACSB8104
-.LLSDACSB8104:
-	.uleb128 .LEHB0-.LFB8104
+	.uleb128 .LLSDACSE8105-.LLSDACSB8105
+.LLSDACSB8105:
+	.uleb128 .LEHB0-.LFB8105
 	.uleb128 .LEHE0-.LEHB0
 	.uleb128 0
 	.uleb128 0
-	.uleb128 .LEHB1-.LFB8104
+	.uleb128 .LEHB1-.LFB8105
 	.uleb128 .LEHE1-.LEHB1
-	.uleb128 .L486-.LFB8104
+	.uleb128 .L486-.LFB8105
 	.uleb128 0
-.LLSDACSE8104:
+.LLSDACSE8105:
 	.section	.text.startup
 	.cfi_endproc
 	.section	.text.unlikely
 	.cfi_startproc
 	.cfi_personality 0x3,__gxx_personality_v0
-	.cfi_lsda 0x3,.LLSDAC8104
+	.cfi_lsda 0x3,.LLSDAC8105
 	.type	main.cold, @function
 main.cold:
-.LFSB8104:
+.LFSB8105:
 .L5:
 	.cfi_escape 0xf,0x3,0x76,0x58,0x6
 	.cfi_escape 0x10,0x3,0x2,0x76,0x50
@@ -5809,19 +5811,19 @@ main.cold:
 	call	_Unwind_Resume
 .LEHE2:
 	.cfi_endproc
-.LFE8104:
+.LFE8105:
 	.section	.gcc_except_table
-.LLSDAC8104:
+.LLSDAC8105:
 	.byte	0xff
 	.byte	0xff
 	.byte	0x1
-	.uleb128 .LLSDACSEC8104-.LLSDACSBC8104
-.LLSDACSBC8104:
+	.uleb128 .LLSDACSEC8105-.LLSDACSBC8105
+.LLSDACSBC8105:
 	.uleb128 .LEHB2-.LCOLDB78
 	.uleb128 .LEHE2-.LEHB2
 	.uleb128 0
 	.uleb128 0
-.LLSDACSEC8104:
+.LLSDACSEC8105:
 	.section	.text.unlikely
 	.section	.text.startup
 	.size	main, .-main
@@ -5833,7 +5835,7 @@ main.cold:
 	.p2align 4
 	.type	_GLOBAL__sub_I_main, @function
 _GLOBAL__sub_I_main:
-.LFB8709:
+.LFB8710:
 	.cfi_startproc
 	pushq	%rbp
 	.cfi_def_cfa_offset 16
@@ -5846,20 +5848,22 @@ _GLOBAL__sub_I_main:
 	movl	$_ZStL8__ioinit, %esi
 	movl	$_ZNSt8ios_base4InitD1Ev, %edi
 	call	__cxa_atexit
-	vpbroadcastq	.LC87(%rip), %zmm0
-	vpbroadcastq	.LC92(%rip), %zmm1
-	vmovdqa64	%zmm0, _ZN9FAST_MATHL8exp_maskE(%rip)
 	vpbroadcastq	.LC88(%rip), %zmm0
-	vmovdqa64	%zmm1, _ZN9FAST_MATHL7exp_infE(%rip)
-	vmovdqa64	%zmm0, _ZN9FAST_MATHL9frac_maskE(%rip)
-	vpbroadcastq	.LC89(%rip), %zmm0
-	vpbroadcastq	.LC93(%rip), %zmm1
-	vmovdqa64	%zmm0, _ZN9FAST_MATHL7exp_subE(%rip)
-	vpbroadcastq	.LC90(%rip), %zmm0
-	vmovdqa64	%zmm1, _ZN9FAST_MATHL8exp_flowE(%rip)
-	vmovdqa64	%zmm0, _ZN9FAST_MATHL8exp_zeroE(%rip)
 	vpbroadcastq	.LC94(%rip), %zmm1
+	vmovdqa64	%zmm0, _ZN9FAST_MATHL8exp_maskE(%rip)
+	vpbroadcastq	.LC89(%rip), %zmm0
+	vmovdqa64	%zmm1, _ZN9FAST_MATHL7exp_infE(%rip)
+	vmovdqa64	%zmm0, _ZN9FAST_MATHL10exp_mask10E(%rip)
+	vpbroadcastq	.LC90(%rip), %zmm0
+	vpbroadcastq	.LC95(%rip), %zmm1
+	vmovdqa64	%zmm0, _ZN9FAST_MATHL9frac_maskE(%rip)
 	vpbroadcastq	.LC91(%rip), %zmm0
+	vmovdqa64	%zmm1, _ZN9FAST_MATHL8exp_flowE(%rip)
+	vmovdqa64	%zmm0, _ZN9FAST_MATHL7exp_subE(%rip)
+	vpbroadcastq	.LC92(%rip), %zmm0
+	vpbroadcastq	.LC96(%rip), %zmm1
+	vmovdqa64	%zmm0, _ZN9FAST_MATHL8exp_zeroE(%rip)
+	vpbroadcastq	.LC93(%rip), %zmm0
 	vmovdqa64	%zmm1, _ZN9FAST_MATHL7exp_oneE(%rip)
 	vmovdqa64	%zmm0, _ZN9FAST_MATHL7exp_setE(%rip)
 	vmovdqa64	%zmm0, _ZN9FAST_MATHL7avx_oneE(%rip)
@@ -5868,7 +5872,7 @@ _GLOBAL__sub_I_main:
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE8709:
+.LFE8710:
 	.size	_GLOBAL__sub_I_main, .-_GLOBAL__sub_I_main
 	.section	.init_array,"aw"
 	.align 8
@@ -5917,6 +5921,8 @@ _ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params:
 	.comm	_ZN9FAST_MATHL7exp_subE,64,64
 	.local	_ZN9FAST_MATHL9frac_maskE
 	.comm	_ZN9FAST_MATHL9frac_maskE,64,64
+	.local	_ZN9FAST_MATHL10exp_mask10E
+	.comm	_ZN9FAST_MATHL10exp_mask10E,64,64
 	.local	_ZN9FAST_MATHL8exp_maskE
 	.comm	_ZN9FAST_MATHL8exp_maskE,64,64
 	.local	_ZStL8__ioinit
@@ -6131,25 +6137,28 @@ _ZZN9FAST_MATH8avx_2powEDv8_dE15pow_poly_params:
 	.set	.LC75,.LC51
 	.set	.LC76,.LC52
 	.set	.LC77,.LC53
-	.set	.LC87,.LC1
-	.align 8
-.LC88:
-	.quad	4503599627370495
+	.set	.LC88,.LC1
 	.align 8
 .LC89:
-	.quad	1023
+	.quad	9214364837600034816
 	.align 8
 .LC90:
-	.quad	-9218868437227405313
-	.set	.LC91,.LC55
+	.quad	4503599627370495
+	.align 8
+.LC91:
+	.quad	1023
 	.align 8
 .LC92:
-	.quad	1024
-	.align 8
-.LC93:
-	.quad	10
+	.quad	-9218868437227405313
+	.set	.LC93,.LC55
 	.align 8
 .LC94:
+	.quad	1024
+	.align 8
+.LC95:
+	.quad	10
+	.align 8
+.LC96:
 	.quad	4503599627370496
 	.hidden	__dso_handle
 	.ident	"GCC: (GNU) 11.2.1 20210728 (Red Hat 11.2.1-1)"

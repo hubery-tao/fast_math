@@ -8,36 +8,46 @@
 #include <math.h>
 #include <stdio.h>
 
-// 调试用
-__attribute__((__always_inline__)) inline void
-print_avx(__m512d x){
-    double tmp[8] __attribute__((__aligned__(64)));
-    _mm512_store_pd(tmp, x);
-    for (uint8_t i = 0; i != 8; ++i){
-        printf("%lf\t", tmp[i]);
-    }
-    printf("\n");
-}
+// // 调试用
+// __attribute__((__always_inline__)) inline void
+// print_avx(__m512d x){
+//     double tmp[8] __attribute__((__aligned__(64)));
+//     _mm512_store_pd(tmp, x);
+//     for (uint8_t i = 0; i != 8; ++i){
+//         printf("%lf\t", tmp[i]);
+//     }
+//     printf("\n");
+// }
 
-__attribute__((__always_inline__)) inline void
-print_avx(__m512i x){
-    int64_t tmp[8] __attribute__((__aligned__(64)));
-    _mm512_store_epi64(tmp, x);
-    for (uint8_t i = 0; i != 8; ++i){
-        printf("%ld\t\t", tmp[i]);
-    }
-    printf("\n");
-}
+// __attribute__((__always_inline__)) inline void
+// print_avx(__m512i x){
+//     int64_t tmp[8] __attribute__((__aligned__(64)));
+//     _mm512_store_epi64(tmp, x);
+//     for (uint8_t i = 0; i != 8; ++i){
+//         printf("%ld\t\t", tmp[i]);
+//     }
+//     printf("\n");
+// }
 
-__attribute__((__always_inline__)) inline void
-print_avx_hex(__m512i x){
-    int64_t tmp[8] __attribute__((__aligned__(64)));
-    _mm512_store_epi64(tmp, x);
-    for (uint8_t i = 0; i != 8; ++i){
-        printf("%lx\t\t", tmp[i]);
-    }
-    printf("\n");
-}
+// __attribute__((__always_inline__)) inline void
+// print_avx_hex(__m512i x){
+//     int64_t tmp[8] __attribute__((__aligned__(64)));
+//     _mm512_store_epi64(tmp, x);
+//     for (uint8_t i = 0; i != 8; ++i){
+//         printf("%16lx\t", tmp[i]);
+//     }
+//     printf("\n");
+// }
+
+// __attribute__((__always_inline__)) inline void
+// print_avx_hex(__m512d x){
+//     int64_t tmp[8] __attribute__((__aligned__(64)));
+//     _mm512_store_epi64(tmp, _mm512_castpd_si512(x));
+//     for (uint8_t i = 0; i != 8; ++i){
+//         printf("%16lx\t", tmp[i]);
+//     }
+//     printf("\n");
+// }
 
 
 namespace FAST_MATH
@@ -48,12 +58,13 @@ namespace FAST_MATH
     typedef __m512d (*AVX_BIN_FUNC)(__m512d, __m512d);
 
 
-    static const uint64_t ninf = 0xfff0000000000000, 
-                        qnan = 0x7ff8000000000001, 
-                        pinf = 0x7ff0000000000000;
+    static const uint64_t ninf = 0xfff0000000000000, // 负无穷
+                        qnan = 0x7ff8000000000001,   // qNaN
+                        pinf = 0x7ff0000000000000;   // 正无穷
 
 
     static const __m512i exp_mask = _mm512_set1_epi64(0x7ff0000000000000), 
+                        exp_mask10 = _mm512_set1_epi64(0x7fe0000000000000), 
                         frac_mask = _mm512_set1_epi64(0x000fffffffffffff), 
                         exp_sub = _mm512_set1_epi64(1023), 
                         exp_zero = _mm512_set1_epi64(0x800fffffffffffff), 
@@ -64,129 +75,7 @@ namespace FAST_MATH
                         avx_one = _mm512_set1_epi64(0x3ff0000000000000);
 
 
-    // function declaration
-    __attribute__((__always_inline__)) inline double 
-    pow2(double x);
-    __attribute__((__always_inline__)) inline double 
-    pow3(double x);
-    __attribute__((__always_inline__)) inline double 
-    pow4(double x);
-    __attribute__((__always_inline__)) inline double 
-    mul(double x, double y);
 
-    __attribute__((__always_inline__)) inline __m512d
-    avx_pow2(__m512d x);
-    __attribute__((__always_inline__)) inline __m512d
-    avx_pow3(__m512d x);
-    __attribute__((__always_inline__)) inline __m512d
-    avx_pow4(__m512d x);
-
-    // __attribute__((__always_inline__)) inline void 
-    // sort(const double *data, size_t nLength);
-    // __attribute__((__always_inline__)) inline void 
-    // rank(const double *data, double *rank_index, size_t nLength);
-
-    __attribute__((__always_inline__)) inline double 
-    sum(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    unifunc_sum(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    sub_unifunc_sum(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                    const double *data, double sub, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    binfunc_sum(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    sub_binfunc_sum(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                    const double * __restrict__ x_data, double x_sub, 
-                    const double * __restrict__ y_data, double y_sub, size_t nLength);
-
-    __attribute__((__always_inline__)) inline double 
-    sum_len(const double *data, size_t nLength, size_t *valid_len);
-    __attribute__((__always_inline__)) inline double 
-    unifunc_sum_len(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                const double *data, size_t nLength, size_t *valid_len);
-    __attribute__((__always_inline__)) inline double 
-    sub_unifunc_sum_len(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                    const double *data, double sub, 
-                    size_t nLength, size_t *valid_len);
-    __attribute__((__always_inline__)) inline double 
-    binfunc_sum_len(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                const double * __restrict__ x_data, const double * __restrict__ y_data, 
-                size_t nLength, size_t *valid_len);
-    __attribute__((__always_inline__)) inline double 
-    sub_binfunc_sum_len(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                    const double * __restrict__ x_data, double x_sub, 
-                    const double * __restrict__ y_data, double y_sub, 
-                    size_t nLength, size_t *valid_len);
-
-    __attribute__((__always_inline__)) inline double 
-    mean(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    unifunc_mean(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    sub_unifunc_mean(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
-                    const double *data, double sub, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    binfunc_mean(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    sub_binfunc_mean(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
-                    const double * __restrict__ x_data, double x_sub, 
-                    const double * __restrict__ y_data, double y_sub, size_t nLength);
-
-    // __attribute__((__always_inline__)) inline double 
-    // sorted_median(const double *data, size_t nLength);
-    // __attribute__((__always_inline__)) inline double 
-    // median(const double *data, size_t nLength);
-
-    __attribute__((__always_inline__)) inline double 
-    min(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline size_t 
-    imin(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    max(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline size_t 
-    imax(const double *data, size_t nLength);
-
-    __attribute__((__always_inline__)) inline double 
-    var(const double *data, size_t nLength, bool bias);
-    __attribute__((__always_inline__)) inline double 
-    std(const double *data, size_t nLength, bool bias);
-    __attribute__((__always_inline__)) inline double 
-    dot(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    covar(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength, bool bias);
-    __attribute__((__always_inline__)) inline double 
-    corr(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    skew(const double *data, size_t nLength);
-    __attribute__((__always_inline__)) inline double 
-    kurt(const double *data, size_t nLength);
-
-    __attribute__((__always_inline__)) inline __m512d
-    avx_2pow(__m512d avx_tmp);
-    __attribute__((__always_inline__)) inline void 
-    vec_exp(const double * __restrict__ data, size_t nLength, double * __restrict__ out);
-    __attribute__((__always_inline__)) inline __m512d
-    avx_log2(__m512d avx_tmp);
-    __attribute__((__always_inline__)) inline void 
-    vec_log2(const double * __restrict__ data, size_t nLength, double * __restrict__ out);
-    __attribute__((__always_inline__)) inline void 
-    vec_log(const double * __restrict__ data, size_t nLength, double * __restrict__ out);
-    __attribute__((__always_inline__)) inline void 
-    vec_log10(const double * __restrict__ data, size_t nLength, double * __restrict__ out);
-
-    __attribute__((__always_inline__)) inline double 
-    ema(const double *data, size_t nLength, size_t n, size_t k);
-    __attribute__((__always_inline__)) inline double 
-    beta(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength);
-
-
-
-    // function definition
     __attribute__((__always_inline__)) inline double 
     pow2(double x)
     {
@@ -269,6 +158,12 @@ namespace FAST_MATH
     // }
 
 
+    /**
+     * @brief 将数组中的 double 累加；忽略NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的和
+     */
     __attribute__((__always_inline__)) inline double 
     sum(const double *data, size_t nLength)
     {
@@ -305,6 +200,16 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数进行一元函数操作后再累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]) 为 NaN，则忽略 i 位置
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     unifunc_sum(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                 const double *data, size_t nLength)
@@ -343,6 +248,16 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数先减去 sub，再进行一元函数操作，最后累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]-sub) 为 NaN，则忽略 i 位置
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(data[i]-sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_unifunc_sum(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                     const double *data, double sub, size_t nLength)
@@ -382,6 +297,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数进行二元函数操作后再累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(x_data[i], y_data[i]) 为 NaN，则忽略 i 位置
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d. __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(x_data[i], y_data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     binfunc_sum(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                 const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength)
@@ -423,6 +349,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数先做减法，再进行二元函数操作，最后累加，
+     *        不会产生中间变量数组，因此比较快；忽略 NaN：
+     *        若 func(x_data[i]-x_sub, y_data[i]-y_sub) 为 NaN，则忽略 i 位置
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d, __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(x_data[i]-x_sub, y_data[i]-y_sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_binfunc_sum(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                     const double * __restrict__ x_data, double x_sub, 
@@ -468,6 +405,13 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 将数组中的 double 累加；忽略NaN，
+     *        将去除 NaN 之后的数组长度存储在 valid_len 中
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的和
+     */
     __attribute__((__always_inline__)) inline double 
     sum_len(const double *data, size_t nLength, size_t *valid_len)
     {
@@ -511,6 +455,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数进行一元函数操作后再累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]) 为 NaN，则忽略 i 位置；
+     *        将忽略 NaN 之后的数组长度存储在 valid_len 中
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     unifunc_sum_len(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                 const double *data, size_t nLength, size_t *valid_len)
@@ -556,6 +511,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数先减去 sub，再进行一元函数操作，最后累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]-sub) 为 NaN，则忽略 i 位置；
+     *        将忽略 NaN 之后的数组长度存储在 valid_len 中
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(data[i]-sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_unifunc_sum_len(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                     const double *data, double sub, 
@@ -603,6 +569,18 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数进行二元函数操作后再累加，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(x_data[i], y_data[i]) 为 NaN，则忽略 i 位置；
+     *        将忽略 NaN 之后的数组长度存储在 valid_len 中
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d. __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(x_data[i], y_data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     binfunc_sum_len(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                 const double * __restrict__ x_data, const double * __restrict__ y_data, 
@@ -652,6 +630,18 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数先做减法，再进行二元函数操作，最后累加，
+     *        不会产生中间变量数组，因此比较快；忽略 NaN：
+     *        若 func(x_data[i]-x_sub, y_data[i]-y_sub) 为 NaN，则忽略 i 位置；
+     *        将忽略 NaN 之后的数组长度存储在 valid_len 中
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d, __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return sum(func(x_data[i]-x_sub, y_data[i]-y_sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_binfunc_sum_len(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                     const double * __restrict__ x_data, double x_sub, 
@@ -704,6 +694,12 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 将数组中的 double 的平均 ；忽略NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的平均
+     */
     __attribute__((__always_inline__)) inline double 
     mean(const double *data, size_t nLength)
     {
@@ -712,6 +708,16 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数进行一元函数操作后再取平均，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]) 为 NaN，则忽略 i 位置
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return mean(func(data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     unifunc_mean(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                 const double *data, size_t nLength)
@@ -721,6 +727,16 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对数组中的每个数先减去 sub，再进行一元函数操作，最后取平均，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(data[i]-sub) 为 NaN，则忽略 i 位置
+     * @param func 一元函数 double -> double
+     * @param avx_func 批量一元函数 __mm512d -> __mm512d 
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return mean(func(data[i]-sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_unifunc_mean(UNI_FUNC func, AVX_UNI_FUNC avx_func, 
                     const double *data, double sub, size_t nLength)
@@ -730,6 +746,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数进行二元函数操作后再取平均，
+     *        不会产生中间变量数组，因此比较快；忽略NaN：
+     *        若 func(x_data[i], y_data[i]) 为 NaN，则忽略 i 位置
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d. __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return mean(func(x_data[i], y_data[i]))
+     */
     __attribute__((__always_inline__)) inline double 
     binfunc_mean(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                 const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength)
@@ -739,6 +766,17 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 对两个数组中的每对数先做减法，再进行二元函数操作，最后取平均，
+     *        不会产生中间变量数组，因此比较快；忽略 NaN：
+     *        若 func(x_data[i]-x_sub, y_data[i]-y_sub) 为 NaN，则忽略 i 位置
+     * @param func 二元函数 (double, double) -> double
+     * @param avx_func 批量二元函数 (__mm512d, __mm512d) -> __mm512d 
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return mean(func(x_data[i]-x_sub, y_data[i]-y_sub))
+     */
     __attribute__((__always_inline__)) inline double 
     sub_binfunc_mean(BIN_FUNC func, AVX_BIN_FUNC avx_func, 
                     const double * __restrict__ x_data, double x_sub, 
@@ -774,7 +812,13 @@ namespace FAST_MATH
     // }
 
 
-    /* 如果数组中全是 NaN，则返回 INFINITY */
+    /**
+     * @brief 求数组中 double 的最小值，忽略 NaN；
+     *        如果数组中全是 NaN，则返回 INFINITY
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的最小值
+     */
     __attribute__((__always_inline__)) inline double 
     min(const double *data, size_t nLength)
     {
@@ -805,7 +849,13 @@ namespace FAST_MATH
     }
 
 
-    /* 如果数组中全是 NaN, 则返回 (uint64_t)(-1) */
+    /**
+     * @brief 求数组中 double 最小值的索引，忽略 NaN；
+     *        如果数组中全是 NaN, 则返回 (uint64_t)(-1)
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中最小值所在的索引
+     */
     __attribute__((__always_inline__)) inline size_t 
     imin(const double *data, size_t nLength)
     {
@@ -865,7 +915,13 @@ namespace FAST_MATH
     }
 
 
-    /* 如果数组中全是 NaN，则返回 -INFINITY */
+    /**
+     * @brief 求数组中 double 的最大值，忽略 NaN；
+     *        如果数组中全是 NaN，则返回 -INFINITY
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的最大值
+     */
     __attribute__((__always_inline__)) inline double 
     max(const double *data, size_t nLength)
     {
@@ -894,7 +950,14 @@ namespace FAST_MATH
         }
     }
 
-    /* 如果数组中全是 NaN, 则返回 (uint64_t)(-1) */
+
+    /**
+     * @brief 求数组中 double 最大值的索引，忽略 NaN；
+     *        如果数组中全是 NaN, 则返回 (uint64_t)(-1)
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中最大值所在的索引
+     */
     __attribute__((__always_inline__)) inline size_t 
     imax(const double *data, size_t nLength)
     {
@@ -954,6 +1017,13 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 求数组中 double 的方差，忽略 NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @param bias 是否为有偏估计
+     * @return 数组中 double 的方差
+     */
     __attribute__((__always_inline__)) inline double 
     var(const double *data, size_t nLength, bool bias)
     {
@@ -969,6 +1039,13 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 求数组中 double 的标准差，忽略 NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @param bias 是否为有偏估计
+     * @return 数组中 double 的标准差
+     */
     __attribute__((__always_inline__)) inline double 
     std(const double *data, size_t nLength, bool bias)
     {
@@ -976,6 +1053,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 求两个向量的点乘，忽略 NaN：
+     *        若某组数某处为 NaN，则两组数的该位置都被忽略
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return 两个向量的点乘
+     */
     __attribute__((__always_inline__)) inline double 
     dot(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength)
     {
@@ -984,6 +1069,15 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 两组数的协方差，忽略 NaN：
+     *        若某组数某处为 NaN，则两组数的该位置都被忽略
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @param bias 是否为有偏估计
+     * @return 两组数的协方差
+     */
     __attribute__((__always_inline__)) inline double 
     covar(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength, bool bias)
     {
@@ -1052,12 +1146,20 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 两组数的相关系数，忽略 NaN：
+     *        若某组数某处为 NaN，则两组数的该位置都被忽略
+     * @param x_data double 数组
+     * @param y_data double 数组
+     * @param nLength 数组长度
+     * @return 两组数的相关系数
+     */
     __attribute__((__always_inline__)) inline double 
     corr(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength)
     {
         size_t valid_len = nLength;
 
-        if (nLength & ~0x7){
+        if (nLength & ~0x1ff){
             size_t avx_len = nLength & ~0x7, index;
             __m512d avx_x, avx_x_sum, avx_x_pow2, avx_x_pow2_sum, 
                     avx_y, avx_y_sum, avx_y_pow2, avx_y_pow2_sum, 
@@ -1127,6 +1229,12 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 求数组中 double 的偏度，忽略 NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @return 数组中 double 的偏度
+     */
     __attribute__((__always_inline__)) inline double 
     skew(const double *data, size_t nLength)
     {
@@ -1139,6 +1247,13 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief 求数组中 double 的峰度，忽略 NaN
+     * @param data double 数组
+     * @param nLength 数组长度
+     * @param bias 是否为有偏估计
+     * @return 数组中 double 的峰度
+     */
     __attribute__((__always_inline__)) inline double 
     kurt(const double *data, size_t nLength)
     {
@@ -1151,6 +1266,49 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief return __mm512d containing 2^x's, 
+     *        where x's are stored in __mm512d avx_x
+     * @details 
+     * Method: 
+     * 1.   find double r and integer k such that 
+     *      0 <= r < 1 and x = k + r
+     *      we can do that to IEEE754 doubles (except subnormals) 
+     *      through bitwise operations and shifting.
+     *      (1) for x >= 0, 
+     *          x = 2^e * (1+f) = (2^e + [2^e * f]) + r
+     *      (2) for x < 0,
+     *          x = - 2^e * (1+f) = (- 2^e - [2^e * f] - 1) + r
+     *          where [x] is the largest integer no greater than x
+     * 
+     * 2.   approximate 2^r by a special rational function on the interval [0,1)
+     *      consider R(r) = r * (2^r + 1) / (2^r - 1) is an even function, 
+     *      so its Taylor Series should be like: 
+     *      R(r) = a0 + a2 * r^2 + a4 * r^4 + a6 * r^6 + ...
+     *      use Remez Algorithm to fit the above equation trunctated at r^12
+     *      the polynomial can approximate R(r) with errors less than 1e-16
+     *      we can then approximate 2^r = (R(r) + r) / (R(r) - r), 
+     *      the error is analyzed to be less than 1e-16
+     * 
+     * 3.   reset the exponent of 2^r to get 2^x
+     *      this is possible because 1 <= 2^r < 2
+     *      2^x = 2^k * 2^r
+     *      so simply reset the exponent of IEEE754 doubles to k+1023
+     * 
+     * Accuracy:
+     *      Since we approximate 2^r with errors less than 1e-16, 
+     *      the approximation of 2^x should have errors less than 1 ulp 
+     *      (unit in the last place)
+     * 
+     * Special Cases:
+     *      INFINITY    ->  INFINITY
+     *      -INFINITY   ->  0
+     *      NaN         ->  NaN
+     * 
+     * Overflow & Underflow:
+     *      x >= 1024   ->  INFINITY
+     *      x < -1022   ->  0
+     */
     __attribute__((__always_inline__)) inline __m512d
     avx_2pow(__m512d avx_x){
         static const __m512i pow_poly_params[7] = {_mm512_set1_epi64(0x40071547652b82fe), 
@@ -1181,7 +1339,6 @@ namespace FAST_MATH
         avx_r = _mm512_mask_sub_pd(avx_r, nnexp_mask, avx_r, _mm512_castsi512_pd(avx_one));
         avx_r = _mm512_mask_sub_pd(avx_r, neg_mask, _mm512_castsi512_pd(avx_one), avx_r);
 
-        // print_avx(avx_r);
         avx_pow2 = _mm512_mul_pd(avx_r, avx_r);
         avx_sum = _mm512_fmadd_pd(avx_pow2, _mm512_castsi512_pd(pow_poly_params[1]), 
                                             _mm512_castsi512_pd(pow_poly_params[0]));
@@ -1198,7 +1355,7 @@ namespace FAST_MATH
         avx_sum = _mm512_castsi512_pd(_mm512_mask_sub_epi64(_mm512_castpd_si512(avx_sum), 
                                         neg_mask & nnexp_mask, _mm512_castpd_si512(avx_sum), avx_s));
         underflow_mask = _mm512_mask_testn_epi64_mask(nnexp_mask, _mm512_castpd_si512(avx_sum), 
-                                                            exp_mask) | (flow_mask & neg_mask);
+                                                            exp_mask10) | (flow_mask & neg_mask);
         avx_sum = _mm512_castsi512_pd(_mm512_mask_sub_epi64(_mm512_castpd_si512(avx_sum), 
                                         neg_mask, _mm512_castpd_si512(avx_sum), exp_one));
         avx_sum = _mm512_castsi512_pd(_mm512_mask_set1_epi64(_mm512_castpd_si512(avx_sum), flow_mask, pinf));
@@ -1208,6 +1365,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate 2^x of each double x in data, 
+     *        and store the results in out
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_2pow(const double *data, size_t nLength, double *out)
     {
@@ -1231,6 +1396,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate e^x of each double x in data, 
+     *        and store the results in out
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_exp(const double *data, size_t nLength, double *out)
     {
@@ -1257,6 +1430,15 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate base^x of each double x in data, 
+     *        and store the results in out
+     * @param base base of the exponentiation
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_npow(double base, const double *data, size_t nLength, double *out)
     {
@@ -1283,6 +1465,38 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief return __mm512d containing log_2(x)'s,
+     *        where x's are stored in __mm512d avx_tmp
+     * @details
+     * Method:
+     * 1.   find k and f such that x = 2^k * f, 1 <= f < 2
+     *      this can be done by extracting and resetting 
+     *      the exponent of double x
+     * 
+     * 2.   let s = (f - 1) / (f + 1), then
+     *      log_2(f) = log_2(1 + s) - log_2(1 - s) = R(s), 
+     *      the Taylor Series of R(s) should be like:
+     *      R(s) = a1 * r + a2 * r^3 + a3 * r^5 + a4 * r^7 + ...
+     *      use the Remez Algorithm to fit the above equation truncated at r^13
+     *      the polynomial can approximate log_2(f) with errors less than 1e-11
+     * 
+     * 3.   approximate log_2(x) = k + log_2(f) = k + R(s)
+     * 
+     * Accuracy:
+     *      Since we approximate log_2(f) with errors less than 1e-11, 
+     *      the approximation of log_2(x) has errors less than 1e-11.
+     * 
+     * Special Cases:
+     *      INFINITY    ->  INFINITY
+     *      NaN         ->  NaN
+     *      x = 0       ->  -INFINITY
+     *      x < 0       ->  NaN
+     * 
+     * Overflow & Underflow:
+     *      subnormals  ->  -INFINITY
+     *      Overflow is not likely to happen
+     */
     __attribute__((__always_inline__)) inline __m512d
     avx_log2(__m512d avx_tmp){
         static const __m512i log2_poly_params[7] = {_mm512_set1_epi64(0x40071547652bc40c), 
@@ -1320,6 +1534,14 @@ namespace FAST_MATH
     }
     
 
+    /**
+     * @brief calculate log_2(x) of each double x in data, 
+     *        and store the results in out
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_log2(const double * __restrict__ data, size_t nLength, double * __restrict__ out)
     {
@@ -1343,6 +1565,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate log_e(x) of each double x in data, 
+     *        and store the results in out
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_log(const double * __restrict__ data, size_t nLength, double * __restrict__ out)
     {
@@ -1369,6 +1599,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate log_10(x) of each double x in data, 
+     *        and store the results in out
+     * @param data double list
+     * @param nLength number of doubles in data
+     * @param out where to store the results
+     * @return void
+     */
     __attribute__((__always_inline__)) inline void 
     vec_log10(const double * __restrict__ data, size_t nLength, double * __restrict__ out)
     {
@@ -1395,6 +1633,13 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief caculate the exponential moving average
+     * @param data double list
+     * @param n the position (index) where the weighted calculation starts
+     * @param k current position (index)
+     * @return the exponential moving average at current position
+     */
     __attribute__((__always_inline__)) inline double 
     ema(const double *data, size_t n, size_t k)
     {
@@ -1438,6 +1683,14 @@ namespace FAST_MATH
     }
 
 
+    /**
+     * @brief calculate the beta parameter for univariate linear regression, 
+     *        often used to calculate the beta in the CAPM model
+     * @param x_data independent variable
+     * @param y_data dependent variable
+     * @param nLength length of x_data and y_data
+     * @return parameter beta
+     */
     __attribute__((__always_inline__)) inline double 
     beta(const double * __restrict__ x_data, const double * __restrict__ y_data, size_t nLength)
     {
